@@ -1,0 +1,31 @@
+datasource db{
+    provider = "postgresql"
+    url = env("DATABASE_URL")
+}
+generator client{
+    provider = "prisma-client-js"
+}
+model Player{
+    id Int @id @default(autoincrement())
+    name String
+    level Int @default(1)
+    xp Int @default(0)
+    quests Quest[]
+    createdAt DateTime @default(now())
+}
+model Quest{
+    id Int @id @default(autoincrement())
+    name String
+    description String
+    type QuestType
+    xpReward Int
+    completed Boolean @default(false)
+    playerId Int
+    player Player @relation(fields: [playerId], references: [id])
+    createdAt DateTime @default(now())
+}
+enum QuestType{
+    MAIN
+    SIDE
+    DAILY
+}

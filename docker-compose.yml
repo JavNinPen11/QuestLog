@@ -1,0 +1,31 @@
+version: "3.9"
+services:
+  db:
+    image: postgres:16
+    container_name: questlog-db
+    environment:
+      POSTGRES_USER: questlog
+      POSTGRES_PASSWORD: questlog
+      POSTGRES_DB: questlog
+    volumes:
+      -postgres_data:/var/lib/postgresql/data
+    ports:
+      -"5432:5432"
+  backend:
+    build: ./backend
+    container_name: questlog-backend
+    environment:
+      DATABASE_URL: postgresql://questlog:questlog@db:5432/questlog
+    depends_on:
+      - db
+    ports:
+      -"3000:3000"
+  frontend:
+    build: ./frontend
+    container_name: questlog-frontend
+    depends_on:
+      - backend
+    ports:
+      -"5173:5173"
+volumes:
+  postgres_data:
