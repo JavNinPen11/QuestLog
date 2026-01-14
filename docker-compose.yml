@@ -20,6 +20,10 @@ services:
       - db
     ports:
       - "3000:3000"
+    volumes:
+      - ./backend:/app
+      - /app/node_modules
+    command: npx nodemon src/index.js
   frontend:
     build: ./frontend
     container_name: questlog-frontend
@@ -27,5 +31,9 @@ services:
       - backend
     ports:
       - "5173:5173"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    command: npm start -- --host 0.0.0.0
 volumes:
   postgres_data:
