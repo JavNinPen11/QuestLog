@@ -15,7 +15,7 @@ app.get("/", (req, res) =>{
 })
 app.get("/players", async(req,res) =>{
     try{
-        const players = await prisma.Player.findMany({
+        const players = await prisma.player.findMany({
             include: {
                 quests: true
             }
@@ -29,7 +29,7 @@ app.get("/players", async(req,res) =>{
 app.post("/player", async(req, res) =>{
     try{
         const {name} = req.body
-        const player = await prisma.Player.create({
+        const player = await prisma.player.create({
             data: {name}
         })
         res.status(201).json(player)
@@ -40,7 +40,7 @@ app.post("/player", async(req, res) =>{
 })
 app.get("/quests", async(req, res) =>{
     try{
-        const quests = await prisma.quests.findMany()
+        const quests = await prisma.quest.findMany()
         res.json(quests)
     }
     catch(error){
@@ -50,7 +50,7 @@ app.get("/quests", async(req, res) =>{
 app.post("/quests", async(req, res) =>{
     try{
         const {name, description, type, xpReward, playerId} = req.body
-        const quest = await prisma.quests.create({
+        const quest = await prisma.quest.create({
             data: {name, description, type, xpReward, playerId},
             include: {player: true}
         })
