@@ -15,7 +15,7 @@ app.get("/", (req, res) =>{
 })
 app.get("/players", async(req,res) =>{
     try{
-        const players = await prisma.player.findMany({
+        const players = await prisma.Player.findMany({
             include: {
                 quests: true
             }
@@ -29,7 +29,7 @@ app.get("/players", async(req,res) =>{
 app.post("/player", async(req, res) =>{
     try{
         const {name} = req.body
-        const player = await prisma.player.create({
+        const player = await prisma.Player.create({
             data: {name}
         })
         res.status(201).json(player)
