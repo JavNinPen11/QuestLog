@@ -1,15 +1,17 @@
 import { Link } from "react-router-dom"
-import logo from "../assets/QuestLog_Logo.png"
+import logo from "../assets/QuestLog_LogoFull.png"
 import "./Nav.css"
 
 export const Nav = () => {
   return (
     <div>
-      <nav>
+      <nav className="QLNav">
         <Link to="/">
-          <img src={logo} alt="QuestLog_Logo" className="QLLogo"/>
+          <img src={logo} alt="QuestLog_LogoFull" className="QLLogoFull"/>
         </Link>
-
+        <Link to="/test">
+        To test
+        </Link>
       </nav>
     </div>
   )

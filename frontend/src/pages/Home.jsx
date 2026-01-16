@@ -1,9 +1,9 @@
 import Nav from "../components/Nav.jsx"
+import "./Home.css"
 
 export const Home = () => {
   return (
     <div>
-      hola
       <Nav/>
     </div>
   )
