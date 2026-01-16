@@ -1,8 +1,11 @@
-import React from 'react'
+import Nav from "../components/Nav.jsx"
 
 export const Home = () => {
   return (
-    <div>Home</div>
+    <div>
+      hola
+      <Nav/>
+    </div>
   )
 }
 export default Home
