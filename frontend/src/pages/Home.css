@@ -4,3 +4,61 @@
   padding: 0;
   box-sizing: border-box;
 }
+
+/* main{
+  background-color: #130802;
+} */
+.principal {
+  width: 100%;
+  font-family: "Medieval";
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-image: url(../assets/images/tabern-background.jpg);
+  background-size: 100%;
+  background-repeat: no-repeat;
+  background-position: center;
+  
+
+  mask-image: linear-gradient(to bottom, transparent, black 20%, black 80%, transparent);
+  mask-repeat: no-repeat;
+  mask-size: 100% 100%;
+}
+
+.name {
+  text-transform: uppercase;
+  font-weight: bold;
+}
+
+.title {
+  margin-top: 20vh;
+  height: 20vh;
+  width: 50vw;
+  background-image: url(../assets/images/title-background-text.png);
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.stats {
+  display: flex;
+  height: 70vh;
+  padding: 50vh;
+  margin-bottom: 20vh;
+  text-align: center;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-image: url(../assets/images/parchment-background.png);
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+
+  * {
+    margin-top: 2vh;
+  }
+
+  li {
+    list-style: none;
+  }
+}

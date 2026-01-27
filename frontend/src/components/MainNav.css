@@ -1,0 +1,55 @@
+/* Reset básico */
+
+.MainNav{
+  border: 1px solid black;
+  width: 100%;
+  height: fit-content;
+  /* background-image: url("../assets/images/stone-seamless.jpg"); */
+  background-image: url(../assets/images/wood-seamless.jpg);
+  background-size: 15vh;
+  background-repeat: repeat;
+  display: flex;
+  justify-content: center;
+  justify-content: space-between;
+}
+.LogoPanel{
+  width: 9vw;
+  margin: auto;
+}
+.QuestLog-Logo{
+  width: 100%;
+  
+}
+.LinkContainer{
+  display: flex;
+  background-image: url("../assets/images/medieval-banner.png");
+  background-repeat: no-repeat;
+  background-size: 100%;
+  background-position: center;
+  width: 13vw;
+  height: 6vw;
+  margin-top: 1vw;
+  font-size: 1vw;
+  align-items: center;
+  justify-content: center;
+}
+.LinkContainer:hover{
+  transform: scale(1.02);
+  
+}
+.QuestLog-Logo:hover{
+  transform: scale(1.02);
+}
+.Panel{
+  display: flex;
+  margin-left: 3%;
+  width: 30vw;
+  height: fit-content;
+  display: flex;
+  justify-content: space-between;
+}
+.Link{
+  text-decoration: none;
+  font-family: Medieval;
+  color: black;
+}
