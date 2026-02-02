@@ -1,22 +1,22 @@
 services:
-  db:
-    image: postgres:15
-    container_name: questlog-db
-    environment:
-      POSTGRES_USER: questlog
-      POSTGRES_PASSWORD: questlog
-      POSTGRES_DB: questlog
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
-    ports:
-      - "5432:5432"
+  # db:
+  #   image: postgres:15
+  #   container_name: questlog-db
+  #   environment:
+  #     POSTGRES_USER: questlog
+  #     POSTGRES_PASSWORD: questlog
+  #     POSTGRES_DB: questlog
+  #   volumes:
+  #     - postgres_data:/var/lib/postgresql/data
+  #   ports:
+  #     - "5432:5432"
   backend:
     build: ./backend
     container_name: questlog-backend
     environment:
-      DATABASE_URL: postgresql://questlog:questlog@db:5432/questlog
-    depends_on:
-      - db
+      DATABASE_URL: postgresql://neondb_owner:npg_QKejS25FPvZi@ep-spring-mode-ah293pmh-pooler.c-3.us-east-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require
+    # depends_on:
+    #   - db
     ports:
       - "3000:3000"
     volumes:
@@ -36,5 +36,5 @@ services:
       - ./frontend:/app
       - /app/node_modules
     command: npm run dev
-volumes:
-  postgres_data:
+# volumes:
+#   postgres_data:
