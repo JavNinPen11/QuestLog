@@ -8,6 +8,10 @@ generator client{
 model Player{
     id Int @id @default(autoincrement())
     name String
+    username String @unique
+    password String 
+    email String @unique
+    role RoleType @default(USER)
     level Int @default(1)
     xp Int @default(0)
     quests Quest[]
@@ -29,4 +33,8 @@ enum QuestType{
     MAIN
     SIDE
     DAILY
+}
+enum RoleType{
+    USER
+    ADMIN
 }

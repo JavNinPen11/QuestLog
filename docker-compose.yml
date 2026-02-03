@@ -15,6 +15,7 @@ services:
     container_name: questlog-backend
     environment:
       DATABASE_URL: postgresql://neondb_owner:npg_QKejS25FPvZi@ep-spring-mode-ah293pmh-pooler.c-3.us-east-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require
+      FRONTEND_URL: http://localhost:5173
     # depends_on:
     #   - db
     ports:
@@ -22,12 +23,12 @@ services:
     volumes:
       - ./backend:/app
       - /app/node_modules
-    command: npx nodemon src/index.js
+    command: npx nodemon src/server.js
   frontend:
     build: ./frontend
     container_name: questlog-frontend
     environment:
-      BACKEND_URL : http://localhost:3000
+      VITE_BACKEND_URL: http://localhost:3000
     depends_on:
       - backend
     ports:
