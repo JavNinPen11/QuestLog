@@ -3,8 +3,9 @@ import cors from "cors"
 import playerRoutes from "./routes/playerRoutes.js"
 import questRoutes from "./routes/questRoutes.js"
 import authRoutes from "./routes/authRoutes.js"
+import session from "express-session"
 
-const FRONT_URL = process.env.FRONT_URL
+const FRONT_URL = process.env.FRONTEND_URL
 
 const app = express()
 

@@ -6,6 +6,9 @@ import { UserContext } from "../context/userContext"
 
 export const MainNav = () => {
   const { user, setUser } = useContext(UserContext);
+  console.log(user);
+  
+  
 
   return (
     <div>

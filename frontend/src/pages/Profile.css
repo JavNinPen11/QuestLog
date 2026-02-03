@@ -5,9 +5,10 @@
   box-sizing: border-box;
 }
 
-/* main{
-  background-color: #130802;
-} */
+main{
+  /* background-color: #130802; */
+    background-color: #3A2416;
+}
 .principal {
   width: 100%;
   font-family: "Medieval";
