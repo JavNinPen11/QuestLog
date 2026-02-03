@@ -68,3 +68,4 @@ export const Quests = () => {
         </section>
     )
 }
+export default Quests
