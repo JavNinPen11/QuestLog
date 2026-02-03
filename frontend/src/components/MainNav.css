@@ -50,6 +50,8 @@
 }
 .Link{
   text-decoration: none;
+  all: unset;
+  cursor: pointer;
   font-family: Medieval;
   color: black;
 }

@@ -1,15 +1,24 @@
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import logo from "../assets/images/QuestLog_LogoFull.png"
 import "./MainNav.css"
-import { useContext } from "react"
+import { useContext, useState } from "react"
 import { UserContext } from "../context/userContext"
+import { logout } from "../api/auth"
 
 export const MainNav = () => {
   const { user, setUser } = useContext(UserContext);
-  console.log(user);
-  
-  
+  const { error, setError} = useState("")
+  const navigate = useNavigate()
 
+  const handleLogout = async (e) => {
+    e.preventDefault()
+    const res = await logout()
+    if(res.error) setError(res.error)
+    else{
+      setUser(null)
+      navigate("/")
+    }
+  }
   return (
     <div>
       <nav className="MainNav">
@@ -30,7 +39,9 @@ export const MainNav = () => {
             </section>
             <section className="RigthPanel Panel">
               <div className="LinkContainer"></div>
-              <div className="LinkContainer"></div>
+              <div className="LinkContainer">
+                <button className="Link" onClick={handleLogout}><h1>LogOut</h1></button>
+              </div>
             </section>
           </>) :
           (<>

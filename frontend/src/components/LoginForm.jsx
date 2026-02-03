@@ -1,4 +1,5 @@
-import React, { useContext, useState } from 'react'
+import { useContext, useState } from 'react'
+import {useNavigate} from "react-router-dom"
 import "./LoginForm.css"
 import { UserContext } from '../context/userContext'
 import { login } from '../api/auth'
@@ -8,12 +9,14 @@ export const LoginForm = () => {
     const [username, setUsername] = useState("")
     const [password, setPassword] = useState("")
     const [error, setError] = useState("")
+    const navigate = useNavigate()
 
     const handleSubmit = async (e) => {
         e.preventDefault()
         const res = await login(username, password)
         if(res.error) setError(res.error)
         else{
+            navigate("/")
             setUser(username)
         }
     }
