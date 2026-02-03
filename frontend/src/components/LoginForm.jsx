@@ -1,4 +1,5 @@
 import React, { useContext, useState } from 'react'
+import "./LoginForm.css"
 import { UserContext } from '../context/userContext'
 import { login } from '../api/auth'
 
@@ -25,3 +26,4 @@ export const LoginForm = () => {
     </form>
   )
 }
+export default LoginForm

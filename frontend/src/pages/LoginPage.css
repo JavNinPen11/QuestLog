@@ -1,0 +1,13 @@
+main{
+    width: 100%;
+    min-height: 81vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: aqua;
+}
+.form{
+    display: flex;
+    align-items: center;
+    justify-content: baseline;
+}
