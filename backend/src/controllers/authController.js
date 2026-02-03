@@ -10,6 +10,11 @@ export async function register(req, res) {
         })
         res.status(201).json({ id: user.id, name: user.name, username: user.username, email: user.email })
     } catch (error) {
+        if (error.code === "P2002") {
+            return res.status(400).json({
+                error: "Usuario o email ya existe"
+            })
+        }
         res.status(500).json({ message: error.message })
     }
 }
@@ -22,7 +27,10 @@ export async function login(req, res) {
         const valid = await bcrypt.compare(password, user.password)
         if (!valid) return res.status(401).json({ error: "Contraseña incorrecta" })
 
-        req.session.userId = user.id
+        req.session.user = {
+            id: user.id,
+            role: user.role
+        }
         res.json({ message: "Logged In" })
     }
     catch (error) {
@@ -31,7 +39,10 @@ export async function login(req, res) {
 }
 export async function logout(req, res) {
     try {
-        req.session.destroy(() => {
+        req.session.destroy(err => {
+            if (err) {
+                return res.status(500).json({ error: "No se pudo cerrar sesión" })
+            }
             res.clearCookie("questlog.sid")
             res.json({ message: "Logged Out" })
         })
@@ -41,14 +52,9 @@ export async function logout(req, res) {
     }
 }
 export async function me(req, res) {
-    try {
-        if (!req.session.userId) return res.status(401).json({ error: "No autenticado" })
-        const user = await prisma.player.findUnique({
-            where: { id: req.session.userId },
-            select: { id: true, name: true, username: true }
-        })
-        res.json(user)
-    } catch (error) {
-        res.status(500).json({ error: error.message })
-    }
+  const user = await prisma.player.findUnique({
+    where: { id: req.session.user.id },
+    select: { id: true, name: true, username: true, role: true }
+  })
+  res.json(user)
 }

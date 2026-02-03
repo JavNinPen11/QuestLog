@@ -1,11 +1,11 @@
 import { useContext, useState } from 'react'
 import {useNavigate} from "react-router-dom"
 import "./LoginForm.css"
-import { UserContext } from '../context/userContext'
-import { login } from '../api/auth'
+import { useAuth } from '../context/userContext'
+import { getMe, login } from '../api/auth'
 
 export const LoginForm = () => {
-    const {setUser} = useContext(UserContext)
+    const {setUser} = useAuth()
     const [username, setUsername] = useState("")
     const [password, setPassword] = useState("")
     const [error, setError] = useState("")
@@ -16,8 +16,14 @@ export const LoginForm = () => {
         const res = await login(username, password)
         if(res.error) setError(res.error)
         else{
-            navigate("/")
-            setUser(username)
+            const me = await getMe()
+            if(me){
+                setUser(me)
+                navigate("/")
+            }
+            else{
+                setError("Error al obtener los datos del usuario")
+            }
         }
     }
   return (

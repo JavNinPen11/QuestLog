@@ -1,1 +1,1 @@
-docker compose exec backend npx prisma migrate dev --name player_as_user
+docker compose exec backend npx prisma migrate dev --name full_database_structure
