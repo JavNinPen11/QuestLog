@@ -32,13 +32,13 @@ main{
 }
 
 .title {
-  margin-top: 20vh;
+  margin-top: 10vh;
   height: 20vh;
-  width: 50vw;
-  background-image: url(../assets/images/title-background-text.png);
+  /* width: 50vw; */
+  /* background-image: url(../assets/images/title-background-text.png);
   background-size: contain;
   background-repeat: no-repeat;
-  background-position: center;
+  background-position: center; */
 }
 
 .stats {

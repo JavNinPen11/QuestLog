@@ -1,10 +1,12 @@
 import "./Profile.css"
+import titulo from "../assets/images/title-background-text.png"
+
 
 export const Profile = () => {
 
   return (
     <section className="principal">
-      <h1 className="title"></h1>
+      <img src={titulo} alt="titulo-questlog" className="title"></img>
       <section className="stats">
         <p>Estado del aventurero <span className="name"></span></p>
         <div>

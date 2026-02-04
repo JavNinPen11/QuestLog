@@ -1,5 +1,5 @@
 import { Link, useNavigate } from "react-router-dom"
-import logo from "../assets/images/QuestLog_LogoFull.png"
+import logo from "../assets/images/QuestLog_LogoFull-2.png"
 import "./MainNav.css"
 import { useContext, useState } from "react"
 import { UserContext } from "../context/userContext"
