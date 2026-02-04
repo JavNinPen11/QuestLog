@@ -1,6 +1,6 @@
 import { useContext, useState } from 'react'
 import {useNavigate} from "react-router-dom"
-import "./LoginForm.css"
+import styles from "./LoginForm.module.scss"
 import { useAuth } from '../context/userContext'
 import { getMe, login } from '../api/auth'
 

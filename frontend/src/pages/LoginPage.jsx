@@ -1,10 +1,10 @@
 import LoginForm from "../components/LoginForm"
-import "./LoginPage.css"
+import styles from "./LoginPage.module.scss"
 
 export const LoginPage = () => {
   return (
     <main>
-      <div className="form">
+      <div className={styles.form}>
         <LoginForm />
       </div>
     </main>

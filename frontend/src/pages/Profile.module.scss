@@ -5,10 +5,11 @@
   box-sizing: border-box;
 }
 
-main{
+main {
   /* background-color: #130802; */
-    background-color: #3A2416;
+  background-color: #3A2416;
 }
+
 .principal {
   width: 100%;
   font-family: "Medieval";
@@ -19,20 +20,17 @@ main{
   background-size: 100%;
   background-repeat: no-repeat;
   background-position: center;
-  
+
 
   mask-image: linear-gradient(to bottom, transparent, black 20%, black 80%, transparent);
   mask-repeat: no-repeat;
   mask-size: 100% 100%;
-}
 
-.name {
-  text-transform: uppercase;
-  font-weight: bold;
+
 }
 
 .title {
-  margin-top: 10vh;
+  margin-top: 20vh;
   height: 20vh;
   /* width: 50vw; */
   /* background-image: url(../assets/images/title-background-text.png);
@@ -40,6 +38,13 @@ main{
   background-repeat: no-repeat;
   background-position: center; */
 }
+
+.name {
+  text-transform: uppercase;
+  font-weight: bold;
+}
+
+
 
 .stats {
   display: flex;

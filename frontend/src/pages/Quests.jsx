@@ -1,4 +1,4 @@
-import "./Quests.css"
+import styles from "./Quests.module.scss"
 export const Quests = () => {
     const quests = [
         {
@@ -45,21 +45,21 @@ export const Quests = () => {
     ];
 
     return (
-        <section className="wall">
-            <h1 className="titleMissions"></h1>
-            <section className="paper">
+        <section className={styles.wall}>
+            <h1 className={styles.titleMissions}></h1>
+            <section className={styles.paper}>
                 {quests.map(q => (
-                    <section className={q.type+" card"} key={q.id}>
-                        <div className="name">
+                    <section className={`${styles[q.type]} ${styles.card}`} key={q.id}>
+                        <div className={styles.name}>
                             {q.name}
                         </div>
-                        <div className="description">
+                        <div className={styles.description}>
                             {q.description}
                         </div>
-                        <div className="xp">
+                        <div className={styles.xp}>
                             {q.xpReward}
                         </div>
-                        <div className="completed">
+                        <div className={styles.completed}>
                             {q.completed ? "Completed" : "Uncompleted"}
                         </div>
                     </section>
