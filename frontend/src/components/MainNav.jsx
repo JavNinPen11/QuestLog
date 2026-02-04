@@ -21,7 +21,7 @@ export const MainNav = () => {
   }
   return (
     <div>
-      <nav className={styles.MainNav}>
+      <nav className={user ? styles.MainNavLogged : styles.MainNavUnlogged}>
         {user ? (
           // Usuario Logeado
           <>
@@ -47,21 +47,20 @@ export const MainNav = () => {
           </>) :
           // Usuario no logueado
           (<>
-            <section className={`${styles.LeftPanel} ${styles.Panel}`}>
+            
               <div className={styles.LinkContainer}>
                 <Link to="/login" className={styles.Link}><h1>Login</h1></Link>
               </div>
-            </section>
+            
             <section className={styles.LogoPanel}>
               <Link to="/">
                 <img src={logo} alt="QuestLog-logo" className={styles.questlogLogo}></img>
               </Link>
             </section>
-            <section className={`${styles.RigthPanel} ${styles.Panel}`}>
               <div className={styles.LinkContainer}>
                 <Link to="/register" className={styles.Link}><h1>Register</h1></Link>
               </div>
-            </section>      
+                
           </>)}
       </nav>
     </div>

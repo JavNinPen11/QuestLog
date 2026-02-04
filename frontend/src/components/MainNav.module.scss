@@ -1,6 +1,6 @@
 /* Reset básico */
 
-.MainNav{
+.MainNavLogged{
   border: 1px solid black;
   width: 100%;
   height: fit-content;
@@ -12,9 +12,19 @@
   justify-content: center;
   justify-content: space-between;
 }
+.MainNavUnlogged{
+  border: 1px solid black;
+  width: 100%;
+  height: fit-content;
+  background-image: url(../assets/images/wood-seamless.jpg);
+  background-size: 15vh;
+  background-repeat: repeat;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
 .LogoPanel{
   width: 9vw;
-  margin: auto;
 }
 .questlogLogo{
   width: 100%;
