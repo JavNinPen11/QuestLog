@@ -8,6 +8,7 @@ export const Profile = () => {
   const [me, setMe] = useState()
   const [name, setName] = useState("")
   const [quests, setQuests] = useState([])
+  const [ultima, setUltima] = useState()
   const [error, setError] = useState()
 
   const getInformation = async () => {
@@ -22,18 +23,22 @@ export const Profile = () => {
     if(me){
       setName(me.name)
       setQuests(me.quests)
-      console.log(me.quests);
-      
+      setUltima(ultimaQuest(me.quests))
     }
   },[me])
-  //TERMINAR
   const ultimaQuest = (quests) => {
-    const title = ""
-    let id = 0
-    quests.map( q => {
-      if(q.id > id) id = q.id
-    })
-    title = quests.inde
+    const ultima = quests.reduce((obj, q) => {
+      if(!obj.title){
+        obj.title = q.title
+        obj.id = q.id
+      }
+      if(q.id > obj.id){
+        obj.title = q.title
+        obj.id
+      }
+      return obj
+    },{})
+    return ultima
   }
   return (
     <section className={styles.principal}>
@@ -47,7 +52,7 @@ export const Profile = () => {
         </div>
         <div>
           <h2>Ultima actividad</h2>
-          <p>{}</p>
+          {ultima && <p>{ultima.title}</p>}
         </div>
       </section>
 
