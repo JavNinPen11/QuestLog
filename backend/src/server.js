@@ -29,7 +29,7 @@ app.use(session({
 
 app.use(express.json())
 
-app.use("/players", playerRoutes)
+app.use("/player", playerRoutes)
 app.use("/quests", questRoutes)
 app.use("/auth", authRoutes)
 

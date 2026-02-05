@@ -1,4 +1,4 @@
-import { useContext, useState } from 'react'
+import { useState } from 'react'
 import {useNavigate} from "react-router-dom"
 import styles from "./LoginForm.module.scss"
 import { useAuth } from '../context/userContext'
@@ -9,20 +9,24 @@ export const LoginForm = () => {
     const [username, setUsername] = useState("")
     const [password, setPassword] = useState("")
     const [error, setError] = useState("")
+    const [loading, setLoading] = useState(false)
     const navigate = useNavigate()
 
     const handleSubmit = async (e) => {
         e.preventDefault()
         const res = await login(username, password)
+        setLoading(true)
         if(res.error) setError(res.error)
         else{
             const me = await getMe()
             if(me){
                 setUser(me)
                 navigate("/")
+                setLoading(false)
             }
             else{
                 setError("Error al obtener los datos del usuario")
+                setLoading(false)
             }
         }
     }
@@ -32,6 +36,7 @@ export const LoginForm = () => {
         <input  type='password' placeholder='Contraseña' value={password} onChange={e => setPassword(e.target.value)}/>
         <button type='submit'>Login</button>
         {error && <p>{error}</p>}
+        {(loading && !error) && <p>Cargando...</p>}
     </form>
   )
 }

@@ -24,8 +24,8 @@ export const getPlayerById = async (req, res) => {
     const { id } = req.params
     try {
         const player = await prisma.player.findUnique({
-            where: { id: parseInt(i) },
-            include: { quests: true }
+            where: { id: parseInt(id) },
+            select: { id: true, name: true, level: true, xp: true, email: true, username: true, quests: true}
         })
         if (!player) return res.status(404).json({ error: "Player not found" })
         res.json(player)
