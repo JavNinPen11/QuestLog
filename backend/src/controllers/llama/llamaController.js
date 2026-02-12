@@ -4,12 +4,14 @@ const LLM_URL = process.env.LLM_URL
 const LLM_MODEL = process.env.LLM_MODEL
 
 export async function generateEmbedding(text) {
-    const res = fetch(`${EMBED_URL}/api/embeddings`, {
+    const res = await fetch(`${EMBED_URL}/api/embeddings`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
         },
-        body: JSON.stringify({model: EMBED_MODEL, text})
+        body: JSON.stringify({
+          model: EMBED_MODEL,
+          prompt: text})
     })
     const data = await res.json()
     return data.embedding

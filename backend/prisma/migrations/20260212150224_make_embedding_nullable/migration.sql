@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "Quest" ALTER COLUMN "embedding" SET DEFAULT ARRAY[]::DOUBLE PRECISION[];
