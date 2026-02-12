@@ -16,7 +16,6 @@ services:
     environment:
       DATABASE_URL: postgresql://neondb_owner:npg_QKejS25FPvZi@ep-spring-mode-ah293pmh-pooler.c-3.us-east-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require
       FRONTEND_URL: http://localhost:5173
-      # GEMINI_API_KEY: AIzaSyBSo5-WS5aDOHjiD_VbkVGiGJ00CmFI10E
     # depends_on:
     #   - db
     ports:
@@ -39,5 +38,13 @@ services:
       - ./frontend:/app
       - /app/node_modules
     command: npm run dev
-# volumes:
+  ollama-embed:
+    image: ollama/ollama:latest
+    container_name: questlog-ollama-embed
+    volumes:
+      -ollama_embed_data:/root/.ollama
+    ports:
+      -"11434:11434"  
+volumes:
+  ollama_embed_data:
 #   postgres_data:
