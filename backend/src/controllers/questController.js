@@ -1,11 +1,36 @@
 import prisma from "../prismaClient.js";
+import { callLLM, cosineSimilarity, generateEmbedding } from "./llama/llamaController.js";
+
 
 
 export const createQuest = async (req, res) => {
+    const SIMILARITY_THRRESHOLD = 0.9
+    let xpReward, rewardGold
     try {
         const { title, description, type, playerId } = req.body
 
-        const prompt = `Eres un sistema interno de progresión RPG.
+        const newEmbedding = await generateEmbedding(description)
+
+        const allQuests = await prisma.quest.findMany({
+            select: { id: true, xpReward: true, rewardGold: true, embedding: true }
+        })
+
+        let matched = null
+
+        for (const q of allQuests) {
+            const sim = cosineSimilarity(newEmbedding, q.embedding)
+            if (sim >= SIMILARITY_THRRESHOLD) {
+                matched = q
+                break
+            }
+        }
+
+        if (matched) {
+            xpReward = matched.xpReward
+            rewardGold = matched.rewardGold
+        }
+        else {
+            const prompt = `Eres un sistema interno de progresión RPG.
 
                         Analiza la siguiente quest y devuelve EXCLUSIVAMENTE un JSON válido,
                         sin texto adicional, sin explicaciones, sin markdown.
@@ -35,34 +60,26 @@ export const createQuest = async (req, res) => {
                         Tipo: ${type}
                         Descripción: "${description}"
                         `
-
-        const response = await ai.models.generateContent({
-            model: "gemini-3-flash-preview",
-            contents: prompt,
-            config: {
-                thinkingConfig: {
-                    thinkingLevel: ThinkingLevel.LOW,
-                }
+            const llmRes = callLLM(prompt)
+            try {
+                const json = JSON.parse(llmRes)
+                xpReward = Math.min(Math.max(json.xpReward, 5), 500)
+                rewardGold = Math.min(Math.max(json.rewardGold, 5), 500)
+            }catch(err){
+                console.error("LLM no devolvio un JSON valido, fallback")
+                xpReward = 10
+                rewardGold = 10
+                
             }
-        })
-        let nswr
-        try {
-            nswr = JSON.parse(response.text)
         }
-        catch (error) {
-            console.log("Texto recibido: " + response.text)
-            return res.status(500).json({ error: "La IA no devolvio JSON valido" })
-        }
-        const { xpReward, rewardGold } = nswr
-
-        const quest = await prisma.quest.create({
-            data: { title, description, type, xpReward, rewardGold, playerId },
-            include: { player: true }
-        })
-        return res.json(quest)
-
-    } catch (error) {
-        res.status(500).json({ error: error.message })
+    const quest = await prisma.quest.create({
+        data:{ title, description, type, xpReward, rewardGold, playerId, embedding:newEmbedding},
+        include: {player: true}
+    })
+    return res.json(quest)
+    }catch(err){
+        console.error(err)
+        res.status(500).json({message: err.message})        
     }
 }
 export const getAllQuests = async (req, res) => {

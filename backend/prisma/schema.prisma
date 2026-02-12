@@ -24,6 +24,7 @@ model Quest{
     type QuestType
     xpReward Int?
     rewardGold Int?
+    embedding Float[]
     completed Boolean @default(false)
     playerId Int
     player Player @relation(fields: [playerId], references: [id])

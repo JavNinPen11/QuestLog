@@ -30,7 +30,25 @@ export async function login(req, res) {
         req.session.user = {
             id: user.id,
             role: user.role
+        } 
+        // TEMPORAL
+        async function retroEmbedQuests() {
+            const quests = await prisma.quest.findMany({ where: { embedding: null } })
+
+            for (const q of quests) {
+                const emb = await generateEmbedding(q.description)
+                await prisma.quest.update({
+                    where: { id: q.id },
+                    data: { embedding: emb }
+                })
+                console.log(`Embeddings generados para quest ${q.id} - ${q.title}`)
+            }
         }
+
+        retroEmbedQuests()
+            .then(() => console.log("Embeddings retroactivos completados"))
+            .catch(console.error)
+        ////////////////
         res.json({ message: "Logged In" })
     }
     catch (error) {
@@ -52,9 +70,9 @@ export async function logout(req, res) {
     }
 }
 export async function me(req, res) {
-  const user = await prisma.player.findUnique({
-    where: { id: req.session.user.id },
-    select: { id: true, name: true, username: true, role: true }
-  })
-  res.json(user)
+    const user = await prisma.player.findUnique({
+        where: { id: req.session.user.id },
+        select: { id: true, name: true, username: true, role: true }
+    })
+    res.json(user)
 }

@@ -17,7 +17,7 @@ services:
       DATABASE_URL: postgresql://neondb_owner:npg_QKejS25FPvZi@ep-spring-mode-ah293pmh-pooler.c-3.us-east-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require
       FRONTEND_URL: http://localhost:5173
       EMBED_URL: http://ollama-embed:11434
-      LLM_URL: http://ollama-llm:11434
+      LLM_URL: http://ollama-llm:11435
       EMBED_MODEL: nomic-embed-text
       LLM_MODEL: mistral:7b-instruct-q4_0
     # depends_on:
@@ -48,7 +48,17 @@ services:
     volumes:
       - ollama_embed_data:/root/.ollama
     ports:
-      - "11434:11434"  
+      - "11434:11434"
+  llm:
+    image: ollama/ollama:latest
+    container_name: questlog-ollama-llm
+    volumes:
+      - ollama_llm_data:/root/.ollama
+    ports:
+      - "11435:11435"
+    profiles:
+      - llm
 volumes:
   ollama_embed_data:
+  ollama_llm_data:
 #   postgres_data:

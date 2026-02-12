@@ -1,1 +1,1 @@
-docker compose exec backend npx prisma migrate dev --name full_database_structure
+docker compose exec backend npx prisma migrate dev --name embedding addition
