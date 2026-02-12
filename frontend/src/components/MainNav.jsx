@@ -30,7 +30,7 @@ export const MainNav = () => {
                 <Link to="/profile" className={styles.Link}><h1>Perfil</h1></Link>
               </div>
               <div className={styles.LinkContainer}>
-                <Link to="/quests" className={styles.Link}><h1>Misiones</h1></Link>
+                <Link to="/quests" className={styles.Link}><h1>Quests</h1></Link>
               </div>
             </section>
             <section className={styles.LogoPanel}>

@@ -1,57 +1,31 @@
+import { useEffect, useState } from "react"
 import styles from "./Quests.module.scss"
+import { getPlayer } from "../api/player"
 export const Quests = () => {
-    const quests = [
-        {
-            id: 1,
-            name: "Derrotar al bug del render",
-            type: "MAIN",
-            xpReward: 50,
-            completed: true,
-            description: "Identificar y corregir el error que hace que los componentes no se muestren correctamente."
-        },
-        {
-            id: 2,
-            name: "Actualizar la wiki del gremio",
-            type: "SIDE",
-            xpReward: 20,
-            completed: false,
-            description: "Agregar información reciente y corregir errores en las páginas de la wiki del gremio."
-        }
-        ,
-        {
-            id: 3,
-            name: "Entrenar habilidades de calistenia",
-            type: "DAILY",
-            xpReward: 10,
-            completed: false,
-            description: "Realizar tu rutina diaria de calistenia para mantener fuerza y resistencia."
-        },
-        {
-            id: 4,
-            name: "Entrenar habilidades de calistenia",
-            type: "SIDE",
-            xpReward: 10,
-            completed: false,
-            description: "Realizar tu rutina diaria de calistenia para mantener fuerza y resistencia."
-        },
-        {
-            id: 5,
-            name: "Entrenar habilidades de calistenia",
-            type: "MAIN",
-            xpReward: 10,
-            completed: false,
-            description: "Realizar tu rutina diaria de calistenia para mantener fuerza y resistencia."
-        },
-    ];
-
+    const [me, setMe] = useState()
+    const [quests, setQuests] = useState()
+    const [error, setError] = useState()
+  const getInformation = async () => {
+    const res = await getPlayer()
+    if(!res.message) setMe(res)
+    else setError(res.message)
+  }
+  useEffect(() => {
+    getInformation()
+  },[])
+  useEffect(() => {
+    if(me){
+      setQuests(me.quests)
+    }
+  },[me])
     return (
         <section className={styles.wall}>
             <h1 className={styles.titleMissions}></h1>
             <section className={styles.paper}>
-                {quests.map(q => (
+                {quests && quests.map(q => (
                     <section className={`${styles[q.type]} ${styles.card}`} key={q.id}>
-                        <div className={styles.name}>
-                            {q.name}
+                        <div className={styles.title}>
+                            {q.title}
                         </div>
                         <div className={styles.description}>
                             {q.description}
