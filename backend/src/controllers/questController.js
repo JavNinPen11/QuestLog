@@ -1,8 +1,5 @@
 import prisma from "../prismaClient.js";
-import { GoogleGenAI, ThinkingLevel } from "@google/genai"
-const ai = new GoogleGenAI({
-    apiKey: process.env.GEMINI_API_KEY,
-})
+
 
 export const createQuest = async (req, res) => {
     try {
