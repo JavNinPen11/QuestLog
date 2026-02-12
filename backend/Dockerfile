@@ -5,10 +5,8 @@ WORKDIR /app
 COPY package*.json ./
 RUN npm install
 
-# COPY prisma ./prisma
-# COPY src ./src
-# RUN npx prisma generate
+COPY . .
 
 EXPOSE 3000
-CMD [ "npm", "run", "dev" ]
-# CMD sh -c "npx prisma db push && npm run dev"
+CMD ["npx", "nodemon", "--legacy-watch", "--watch", "src", "--ext", "js,json", "src/server.js"]
+

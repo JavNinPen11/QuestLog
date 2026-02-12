@@ -1,15 +1,4 @@
 services:
-  # db:
-  #   image: postgres:15
-  #   container_name: questlog-db
-  #   environment:
-  #     POSTGRES_USER: questlog
-  #     POSTGRES_PASSWORD: questlog
-  #     POSTGRES_DB: questlog
-  #   volumes:
-  #     - postgres_data:/var/lib/postgresql/data
-  #   ports:
-  #     - "5432:5432"
   backend:
     build: ./backend
     container_name: questlog-backend
@@ -20,15 +9,11 @@ services:
       LLM_URL: http://ollama-llm:11435
       EMBED_MODEL: nomic-embed-text
       LLM_MODEL: mistral:7b-instruct-q4_0
-    # depends_on:
-    #   - db
     ports:
       - "3000:3000"
     volumes:
       - ./backend:/app
-      # - /app/node_modules
-    # command: npx nodemon src/server.js
-    command: sh -c "npm install && npx prisma generate && npx nodemon src/server.js"
+    command: sh -c "npm install && npx prisma generate && npx nodemon --legacy-watch src/server.js"
   frontend:
     build: ./frontend
     container_name: questlog-frontend
@@ -61,4 +46,3 @@ services:
 volumes:
   ollama_embed_data:
   ollama_llm_data:
-#   postgres_data:
