@@ -42,9 +42,9 @@ services:
     image: ollama/ollama:latest
     container_name: questlog-ollama-embed
     volumes:
-      -ollama_embed_data:/root/.ollama
+      - ollama_embed_data:/root/.ollama
     ports:
-      -"11434:11434"  
+      - "11434:11434"  
 volumes:
   ollama_embed_data:
 #   postgres_data:
