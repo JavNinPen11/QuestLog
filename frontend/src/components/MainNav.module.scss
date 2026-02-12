@@ -28,7 +28,10 @@
 }
 .questlogLogo{
   width: 100%;
-  
+  transition: transform 0.2s ease;
+  &:hover{
+  transform: scale(1.02);
+}
 }
 .LinkContainer{
   display: flex;
@@ -42,13 +45,10 @@
   font-size: 1vw;
   align-items: center;
   justify-content: center;
-}
-.LinkContainer:hover{
+  transition: transform 0.2s ease;
+  &:hover{
   transform: scale(1.02);
-  
-}
-.questlogLogo:hover{
-  transform: scale(1.02);
+  }
 }
 .Panel{
   display: flex;
