@@ -6,3 +6,13 @@ export async function getQuests() {
     })
     return res.json()
 }
+export async function createQuest(data) {
+    const res = await fetch(`${API_URL}/quests/`, {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: data,
+        credentials: "include"
+    })
+    
+    return res.json()
+}
