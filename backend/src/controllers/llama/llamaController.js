@@ -18,6 +18,18 @@ export async function generateEmbedding(text) {
     const data = await res.json()
     return data.embedding
 }
+export async function generateQuestData(prompt) {
+  const res = await fetch(`${LLM_URL}/api/generate`, {
+    method: "POST",
+    headers: {"Content-Type": "application/json"},
+    body: JSON.stringify({
+      model: LLM_MODEL,
+      prompt,
+      stream: false
+    })
+  })
+  return res.json()
+}
 export function cosineSimilarity(vecA, vecB) {
   const dot = vecA.reduce((sum, a, i) => sum + a * vecB[i], 0)
   const magA = Math.sqrt(vecA.reduce((sum, a) => sum + a * a, 0))

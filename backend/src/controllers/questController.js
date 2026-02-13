@@ -1,13 +1,17 @@
 import prisma from "../prismaClient.js";
-import { ensureLLM, cosineSimilarity, generateEmbedding } from "./llama/llamaController.js";
+import { ensureLLM, cosineSimilarity, generateEmbedding, generateQuestData } from "./llama/llamaController.js";
 
 
 
 export const createQuest = async (req, res) => {
     const SIMILARITY_THRRESHOLD = 0.85
     let xpReward, rewardGold
+    
     try {
         const { title, description, type, playerId } = req.body
+
+        const prompt = "Eres un sistema interno de progresión RPG. Analiza la siguiente quest y devuelve EXCLUSIVAMENTE un JSON válido, sin texto adicional, sin explicaciones, sin markdown. Formato EXACTO: {\"xpReward\": 0, \"rewardGold\": 0} Reglas: - xpReward mínimo: 5 - xpReward máximo: 500 - rewardGold mínimo: 5 - rewardGold máximo: 500 Reglas por tipo: - MAIN: recompensas altas - SIDE: recompensas medias - DAILY: recompensas bajas La descripción es el factor principal. El tipo de quest solo ajusta el resultado. Quest: Título: \""+title+"\" Tipo: "+type+" Descripción: \""+description+"\""
+        
 
         let newEmbedding = await generateEmbedding(description)
 
@@ -30,52 +34,21 @@ export const createQuest = async (req, res) => {
             rewardGold = matched.rewardGold
             newEmbedding = matched.embedding
         }
-        else {
-            const prompt = `Eres un sistema interno de progresión RPG.
-
-                        Analiza la siguiente quest y devuelve EXCLUSIVAMENTE un JSON válido,
-                        sin texto adicional, sin explicaciones, sin markdown.
-
-                        Formato EXACTO:
-                        {
-                        "xpReward": number,
-                        "rewardGold": number
-                        }
-
-                        Reglas:
-                        - xpReward mínimo: 5
-                        - xpReward máximo: 500
-                        - rewardGold mínimo: 5
-                        - rewardGold máximo: 500
-
-                        Reglas por tipo:
-                        - MAIN: recompensas altas
-                        - SIDE: recompensas medias
-                        - DAILY: recompensas bajas
-
-                        La descripción es el factor principal.
-                        El tipo de quest solo ajusta el resultado.
-
-                        Quest:
-                        Título: "${title}"
-                        Tipo: ${type}
-                        Descripción: "${description}"
-                        `
-            const llmRunning = await ensureLLM()
+        else {             
+            // const llmRunning = await ensureLLM()
+            const llmRunning = true
             if (llmRunning) {
-                const llmRes = await fetch(`${process.env.LLM_URL}/api/generate`, {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ model: process.env.LLM_MODEL, text: description })
-                })
-                const llmText = await llmRes.text()
+                const llmRes = await generateQuestData(prompt)
+                
                 try {
-                    const json = JSON.parse(llmText)
-                    xpReward = Math.min(Math.max(json.xpReward, 5), 500)
-                    rewardGold = Math.min(Math.max(json.rewardGold, 5), 500)
+                    const response = JSON.parse(llmRes.response)
+                    xpReward = Math.min(Math.max(response.xpReward, 5), 500)
+                    rewardGold = Math.min(Math.max(response.rewardGold, 5), 500)
 
                 } catch (err) {
-                    console.log("LLM no devolvió JSON válido, fallback:", llmText)
+                    console.log("LLM no devolvió JSON válido, fallback:", llmRes)
+                    console.log(err.message);
+                    
                     xpReward = 5
                     rewardGold = 5
                 }
@@ -94,7 +67,7 @@ export const createQuest = async (req, res) => {
         const questEmbeddings = await prisma.questEmbeddings.create({
             data: { embedding: newEmbedding, creationTitle: title, creationDescription: description, xpReward, rewardGold }
         })
-        return res.json(quest)
+        return res.json(quest, questEmbeddings)
     } catch (err) {
         console.error(err)
         res.status(500).json({ message: err.message })
