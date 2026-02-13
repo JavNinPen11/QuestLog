@@ -1,18 +1,18 @@
 import prisma from "../prismaClient.js";
-import { callLLM, cosineSimilarity, generateEmbedding } from "./llama/llamaController.js";
+import { ensureLLM, cosineSimilarity, generateEmbedding } from "./llama/llamaController.js";
 
 
 
 export const createQuest = async (req, res) => {
-    const SIMILARITY_THRRESHOLD = 0.9
+    const SIMILARITY_THRRESHOLD = 0.85
     let xpReward, rewardGold
     try {
         const { title, description, type, playerId } = req.body
 
-        const newEmbedding = await generateEmbedding(description)
+        let newEmbedding = await generateEmbedding(description)
 
-        const allQuests = await prisma.quest.findMany({
-            select: { id: true, xpReward: true, rewardGold: true, embedding: true }
+        const allQuests = await prisma.questEmbeddings.findMany({
+            select: { id: true, embedding: true, xpReward: true, rewardGold: true }
         })
 
         let matched = null
@@ -28,6 +28,7 @@ export const createQuest = async (req, res) => {
         if (matched) {
             xpReward = matched.xpReward
             rewardGold = matched.rewardGold
+            newEmbedding = matched.embedding
         }
         else {
             const prompt = `Eres un sistema interno de progresión RPG.
@@ -60,26 +61,43 @@ export const createQuest = async (req, res) => {
                         Tipo: ${type}
                         Descripción: "${description}"
                         `
-            const llmRes = callLLM(prompt)
-            try {
-                const json = JSON.parse(llmRes)
-                xpReward = Math.min(Math.max(json.xpReward, 5), 500)
-                rewardGold = Math.min(Math.max(json.rewardGold, 5), 500)
-            }catch(err){
-                console.error("LLM no devolvio un JSON valido, fallback")
-                xpReward = 10
-                rewardGold = 10
-                
+            const llmRunning = await ensureLLM()
+            if (llmRunning) {
+                const llmRes = await fetch(`${process.env.LLM_URL}/api/generate`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ model: process.env.LLM_MODEL, text: description })
+                })
+                const llmText = await llmRes.text()
+                try {
+                    const json = JSON.parse(llmText)
+                    xpReward = Math.min(Math.max(json.xpReward, 5), 500)
+                    rewardGold = Math.min(Math.max(json.rewardGold, 5), 500)
+
+                } catch (err) {
+                    console.log("LLM no devolvió JSON válido, fallback:", llmText)
+                    xpReward = 5
+                    rewardGold = 5
+                }
             }
+            else {
+                console.log("LLM no disponible, fallback activado")
+                xpReward = 5
+                rewardGold = 5
+            }
+
         }
-    const quest = await prisma.quest.create({
-        data:{ title, description, type, xpReward, rewardGold, playerId, embedding:newEmbedding},
-        include: {player: true}
-    })
-    return res.json(quest)
-    }catch(err){
+        const quest = await prisma.quest.create({
+            data: { title, description, type, xpReward, rewardGold, playerId, embedding: newEmbedding },
+            include: { player: true }
+        })
+        const questEmbeddings = await prisma.questEmbeddings.create({
+            data: { embedding: newEmbedding, creationTitle: title, creationDescription: description, xpReward, rewardGold }
+        })
+        return res.json(quest)
+    } catch (err) {
         console.error(err)
-        res.status(500).json({message: err.message})        
+        res.status(500).json({ message: err.message })
     }
 }
 export const getAllQuests = async (req, res) => {

@@ -41,6 +41,7 @@ services:
       - ollama_llm_data:/root/.ollama
     ports:
       - "11435:11435"
+    command: --listen-http
     profiles:
       - llm
 volumes:

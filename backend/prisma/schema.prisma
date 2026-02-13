@@ -29,6 +29,16 @@ model Quest{
     playerId Int
     player Player @relation(fields: [playerId], references: [id])
     createdAt DateTime @default(now())
+    @@unique([playerId, title])
+}
+model QuestEmbeddings{
+    id Int @id @default(autoincrement())
+    embedding Float[] @default([])
+    creationTitle String
+    creationDescription String
+    xpReward Int
+    rewardGold Int
+    createdAt DateTime @default(now())
 }
 enum QuestType{
     MAIN
